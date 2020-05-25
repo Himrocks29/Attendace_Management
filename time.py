@@ -1,6 +1,6 @@
+import recognize
 import datetime
 import time
-import recognize
 from time import localtime
 import sys
 
@@ -16,7 +16,7 @@ def lt():
             t = datetime.datetime.now()
         #if t.minute == 30:
             #t = datetime.datetime.now()
-            if t.minute == 16:
+            if t.minute in range(16,44):
             #Sleep functio for 30 minutes during class. 
                 print("Half Hour Sleep Time")
                 time.sleep(1800)
