@@ -37,6 +37,10 @@ def train():
     file.write(pickle.dumps(data))
     file.close()
 
+def std_lst(name):
+    names = []
+    names.append(name)
+    print(names)
 
 
 def recognize():
@@ -45,16 +49,15 @@ def recognize():
     data = pickle.loads(open("./encodings.pickle", "rb").read())
     print("[INFO] Starting Video Stream...")
     vs = VideoStream(src=0).start()
-    cap = cv2.VideoCapture(1)
+    #cap = cv2.VideoCapture(0)
     
     while True:
-        ret, frame = cap.read()
+        frame = vs.read()
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         rgb = imutils.resize(frame, width=750)
         r = frame.shape[1]/float(rgb.shape[1])
         box = face_recognition.face_locations(rgb, model='hog')
         encodings = face_recognition.face_encodings(rgb, box)
-        names = []
 
         for encoding in encodings:
             matches = face_recognition.compare_faces(data["encodings"],encoding)
@@ -68,10 +71,10 @@ def recognize():
                     name = data["names"][i]
                     counts[name] = counts.get(name, 0)
                     name = max(counts, key = counts.get)
-                    names.append(name)    
-     
-        print(names)       
-        for((top,right,bottom,left), name) in zip(box, names):
+       
+        std_lst(name)
+               
+        for((top,right,bottom,left), name) in zip(box, name):
             top = int(top*r)
             right = int(right *r)
             bottom = int(bottom *r)
@@ -91,7 +94,7 @@ def recognize():
             break
     print(names)
     #time.sleep(5)
-    vs.sleep(10)       
+    #vs.sleep(10)       
     
     cv2.destroyAllWindows()
     
@@ -109,8 +112,9 @@ def main():
         #time.sleep(15)
     else:
         print("Invalid Input\n")
-
-main()
+if __name__ == "__main__":
+   # stuff only to run when not called via 'import' here
+   main()
 
 
 
